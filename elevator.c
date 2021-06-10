@@ -10,7 +10,6 @@ Elevator *create_elevator(int capacity, int currentFloor, PersonList
     Elevator *e=(Elevator*)malloc(sizeof(Elevator));
     e->capacity=capacity;
     e->currentFloor=currentFloor;
-    e->targetFloor=0;
     e->persons=persons;
 }
 
@@ -36,7 +35,7 @@ PersonList* exitElevator(Elevator *e){
         }
     }
     e->persons=stay_list
-    return exit_list
+    //return exit_list
 }
 
 int Counter(PersonList *list){
@@ -59,5 +58,21 @@ PersonList* enterElevator(Elevator *e, PersonList *waitingList){
 }
 
 void stepElevator(Building *b){
-    
+    if(b->elevator->targetFloor==b->elevator->currentFloor){
+        exitElevator(b->elevator);
+        b->waitingLists=enterElevator(b->elevator,b->waitingLists);
+    }else {
+        if(b->elevator->targetFloor>b->elevator->currentFloor){
+            b->elevator->currentFloor=b->elevator->currentFloor+1;
+            exitElevator(b->elevator);
+            b->waitingLists=enterElevator(b->elevator,b->waitingLists);
+        }
+        if(b->elevator->targetFloor<b->elevator->currentFloor){
+            b->elevator->currentFloor=b->elevator->currentFloor-1;
+            exitElevator(b->elevator);
+            b->waitingLists=enterElevator(b->elevator,b->waitingLists);
+        }
+
+        }
+    }
 }
