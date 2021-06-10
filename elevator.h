@@ -4,7 +4,6 @@
 
 typedef struct _Elevator {
     int capacity; // capacité maximale de la cabine
-
     int currentFloor;// étage courant
     int targetFloor; // destination
     PersonList *persons; // personnes dans la cabine

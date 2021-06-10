@@ -51,50 +51,49 @@ void DisplayBuilding(WINDOW *win, Building *b) {
 }
 
 int main() {
-srand(time(NULL)); // should only be called once
+    srand(time(NULL)); // should only be called once
 // generate list of waiting persons
-int nbFloor = 5;
-PersonList **waitingLists = malloc(nbFloor*sizeof(PersonList*));
-for(int currentFloor=0; currentFloor < nbFloor; currentFloor++) {
-waitingLists[currentFloor] = NULL;
-int nbPerson = 5; // 5 persons in the waiting list
-for(int j=0 ; j<nbPerson ; j++) {
-int dest = rand() % (nbFloor);
-Person *p = createPerson(currentFloor, dest);
-waitingLists[currentFloor] = insert(p,waitingLists[currentFloor]);
-}
-}
+    int nbFloor = 5;
+    PersonList **waitingLists = malloc(nbFloor*sizeof(PersonList*));
+    for(int currentFloor=0; currentFloor < nbFloor; currentFloor++) {
+        waitingLists[currentFloor] = NULL;
+        int nbPerson = 5; // 5 persons in the waiting list
+        for(int j=0 ; j<nbPerson ; j++) {
+            int dest = rand() % (nbFloor);
+            Person *p = createPerson(currentFloor, dest);
+            waitingLists[currentFloor] = insert(p,waitingLists[currentFloor]);
+        }
+    }
 // Initialize building and elevator
-int capacity = 3;
-int currentFloor = 0;
-Elevator *elevator = create_elevator(capacity, currentFloor , NULL);
-Building *building = create_building(nbFloor, elevator, waitingLists);
+    int capacity = 3;
+    int currentFloor = 0;
+    Elevator *elevator = create_elevator(capacity, currentFloor , NULL);
+    Building *building = create_building(nbFloor, elevator, waitingLists);
 // Initialize ncurse display
-initscr(); // initialize ncurses
-noecho(); // do not display in window the pressed keys
-halfdelay(2);
-WINDOW *win = newwin(HEIGHT, WIDTH, 0, 0);
+    initscr(); // initialize ncurses
+    noecho(); // do not display in window the pressed keys
+    halfdelay(2);
+    WINDOW *win = newwin(HEIGHT, WIDTH, 0, 0);
 // Animation loop
-bool run=true;
-
-while(run) {
+    bool run=true;
+    while(run) {
 // Generate people in function of input (or quit if &#39;q&#39;)
-int input = wgetch(win);
-if(input == 'q') {
-run = false;
-} else {
-int level = input - '0';
-if(0 <= level && level < nbFloor) {
-building->elevator->targetFloor = level;
-}
-}
+        int input = wgetch(win);
+        if(input == 'q') {
+            run = false;
+        } else {
+            int level = input - '0';
+            if(0 <= level && level < nbFloor) {
+            building->elevator->targetFloor = level;
+        }
+    }
 // Update state machine of elevator !!!!
-stepElevator(building);
-wclear(win); // clear display area
-box(win, 0,0); // display border of window
-DisplayBuilding(win, building);
-wrefresh(win); // actual display function
-}
-endwin(); // correct ending of ncurses
-return 0;
+        stepElevator(building);
+        wclear(win); // clear display area
+        box(win, 0,0); // display border of window
+        DisplayBuilding(win, building);
+        wrefresh(win); // actual display function
+    }
+    endwin(); // correct ending of ncurses
+    return 0;
 }

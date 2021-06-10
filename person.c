@@ -13,3 +13,11 @@ PersonList* insert(Person *p, PersonList *list) {
     s->person=p;
     s->next=list;
 }
+
+PersonList* append(Person *p,PersonList *list){
+    if(list==NULL){
+        return insert(p,list)
+    } else {
+        return insert(list->person,append(p,list->next))
+    }
+}
