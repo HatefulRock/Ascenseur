@@ -16,8 +16,8 @@ PersonList* insert(Person *p, PersonList *list) {
 
 PersonList* append(Person *p,PersonList *list){
     if(list==NULL){
-        return insert(p,list)
+        return insert(p,list);
     } else {
-        return insert(list->person,append(p,list->next))
+        return insert(list->person,append(p,list->next));
     }
 }
