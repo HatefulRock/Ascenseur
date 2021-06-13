@@ -29,5 +29,6 @@ void stepElevator(Building *b);
 
 PersonList* enterElevator(Elevator *e, PersonList
 *waitingList);
+int Counter(PersonList *list);
 
 #endif
